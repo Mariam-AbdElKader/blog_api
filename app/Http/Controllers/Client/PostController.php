@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Models\Post;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Client\PostResource;
-
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -23,7 +21,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        abort_if(!$post->is_active, 404);
+        abort_if(! $post->is_active, 404);
+
         return $post->toResource(PostResource::class);
     }
-};
+}

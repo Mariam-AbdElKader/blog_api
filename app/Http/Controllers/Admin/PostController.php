@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Post;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Http\Resources\Admin\PostResource;
 use App\Http\Requests\Admin\StorePostRequest;
 use App\Http\Requests\Admin\UpdatePostRequest;
+use App\Http\Resources\Admin\PostResource;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -36,14 +34,13 @@ class PostController extends Controller
         return $post->toResource(PostResource::class);
     }
 
-
-
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
         $post->update($request->validated());
+
         return $post->toResource(PostResource::class);
 
     }
@@ -54,6 +51,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+
         return response()->json(['message' => 'Post deleted']);
     }
 }

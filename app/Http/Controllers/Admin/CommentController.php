@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Post;
-use App\Models\Comment;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\CommentResource;
 use App\Http\Requests\Admin\StoreCommentRequest;
 use App\Http\Requests\Admin\UpdateCommentRequest;
+use App\Http\Resources\Admin\CommentResource;
+use App\Models\Comment;
+use App\Models\Post;
 
 class CommentController extends Controller
 {
@@ -26,6 +25,7 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request, Post $post)
     {
         $comment = $post->comments()->create($request->validated());
+
         return $comment->toResource(CommentResource::class);
     }
 
@@ -33,12 +33,14 @@ class CommentController extends Controller
     {
         return $comment->toResource(CommentResource::class);
     }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCommentRequest $request, Post $post, Comment $comment)
     {
         $comment->update($request->validated());
+
         return $comment->toResource(CommentResource::class);
     }
 
@@ -48,6 +50,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $comment->delete();
+
         return response()->json(['message' => 'Comment deleted']);
     }
 }

@@ -4,12 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-
 class Post extends Model
 {
-
-
     protected $fillable = [
         'title',
         'content',
@@ -27,7 +23,6 @@ class Post extends Model
             'is_active' => 'boolean',
         ];
     }
-
 
     public function comments()
     {
