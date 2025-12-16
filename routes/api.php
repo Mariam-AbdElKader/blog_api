@@ -15,9 +15,9 @@ Route::get('/', function () {
 
 
 // Client Routes
-Route::prefix('post')->name('post.')->group(function () {
+Route::prefix('client')->name('client.')->group(function () {
     Route::apiResource('posts', PostController::class)->only(['index', 'show']);
-    Route::apiResource('posts.comments', CommentController::class)->only(['store']);
+    Route::apiResource('posts.comments', CommentController::class)->only(['index','store']);
 });
 
 
