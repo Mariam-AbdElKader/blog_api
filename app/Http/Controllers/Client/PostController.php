@@ -15,18 +15,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::latest()->get()->toResourceCollection(PostResource::class);
+        return Post::latest()->where('is_active', true)->get()->toResourceCollection(PostResource::class);
     }
-
-
-
 
     /**
      * Display the specified resource.
      */
     public function show(Post $post)
     {
+        abort_if(!$post->is_active, 404);
         return $post->toResource(PostResource::class);
     }
-
 };
