@@ -3,49 +3,34 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 class AuthController extends Controller
 {
 
     /**
      * Show the login form.
      */
-    public function login()
+
+    public function login(LoginRequest $request)
     {
-        return view('admin.auth.login');
-    }
-
-    /**
-     * Handle the authentication request.
-     */
-    public function authenticate(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('admin.dashboard'));
+        if (!Auth::attempt($request->validated())) {
+            return response()->json(['message' => 'kan ay 7ad y5o4 we y2ol betna kolna'], 401);
         }
 
-        return back()->withErrors([
-            'login' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        $user = Auth::user();
+        $token = $user->createToken('admin-token')->plainTextToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'user' => $user,
+        ]);
     }
 
-    /**
-     * Log the user out of the application.
-     */
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('login');
+        Auth::user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out']);
     }
 }
